@@ -34,7 +34,10 @@ public class User : BaseEntity
     public bool IsDisabledByInactivity { get; set; }
     public bool Locked { get; set; }
     public bool TemporaryLocked { get; set; }
+    public int AccessFailedCount { get; set; }
     public Status StatusId { get; set; }
+    
+    public DateTimeOffset? ExpirationDate { get; set; }
 
     public virtual Tenant Tenant { get; set; }
 
