@@ -1,0 +1,45 @@
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-form">
+        <mat-card class="login-container">
+          <mat-card-content class="login-content">
+            <div class="logo-container">
+              <!--              <img src="assets\images\logo.png" class="image-logo" alt="fondo">-->
+            </div>
+            <ng-template [ngIf]="!needChangePsw" [ngIfElse]="changePswTemplate">
+              <form [formGroup]="loginForm" (ngSubmit)="signIn(); $event.preventDefault(); $event.stopPropagation();">
+                <mat-form-field tn-input appearance="outline" floatLabel="never" color="accent">
+                  <mat-icon matPrefix>person_pin</mat-icon>
+                  <input type="text" matInput placeholder="Usuario" formControlName="userLogin" required>
+                  <mat-error>
+                    El nombre de usuario es requerido
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field tn-input appearance="outline" floatLabel="never" color="accent">
+                  <mat-icon matPrefix>lock</mat-icon>
+                  <input type="password" matInput placeholder="Contraseña" formControlName="userPass">
+                  <mat-error>
+                    La contraseña es requerida
+                  </mat-error>
+                </mat-form-field>
+
+                <button class="mt-15" mat-raised-button full color="accent" type="submit"
+                        [disabled]="loginFormInvalid">
+                  INGRESAR
+                </button>
+              </form>
+            </ng-template>
+            <ng-template #changePswTemplate>
+              <tn-core-change-password btnColor="accent"
+                                       (changeSubmit)="changePsw($event)"></tn-core-change-password>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="login100-more" style="background-image: url('assets/images/big/login-background.png');">
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {MenuService} from "../../services/menu.service";
 import {Observable, of} from "rxjs";
+import {Menu} from "../../model/menu.model";
 
 @Component({
   selector: 'app-menu',
@@ -10,16 +11,13 @@ import {Observable, of} from "rxjs";
 })
 export class MenuComponent implements OnInit {
   restaurantName: string = '';
-  menu$: Observable<any>;
-  constructor(private route: ActivatedRoute) {
+  menu$: Observable<Menu>;
+  constructor(private route: ActivatedRoute,
+              private menuService: MenuService) {
   }
 
   ngOnInit(): void {
     this.restaurantName = this.route.snapshot.paramMap.get('name') ?? '';
-    this.route.data.subscribe({
-      next: ({ menu }) => {
-        this.menu$ = of(menu)
-      }
-    })
+    this.menu$ = this.menuService.getMenu(this.restaurantName);
   }
 }

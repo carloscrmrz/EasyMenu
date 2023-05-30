@@ -5,13 +5,16 @@
 
 <mat-grid-list cols="2">
   <ng-container *ngIf="(menu$ | async) as menu">
-    <mat-grid-tile *ngFor="let product of menu.children" class="mat-elevation-z2">
-      <mat-grid-tile-header style="justify-content: center"><h3>{{product.name}}</h3></mat-grid-tile-header>
+    <ng-container *ngFor="let section of menu.sections">
+      <p>{{section.sectionName}}</p>
+      <mat-grid-tile *ngFor="let product of section.products" class="mat-elevation-z2">
+        <mat-grid-tile-header style="justify-content: center"><h3>{{product.productName}}</h3></mat-grid-tile-header>
 
-      <br>
-      <p style="justify-self: center">{{product.description}}</p>
-      <mat-grid-tile-footer style="justify-content: right">${{product.price}}</mat-grid-tile-footer>
-    </mat-grid-tile>
+        <br>
+        <p style="justify-self: center">{{product.description}}</p>
+        <mat-grid-tile-footer style="justify-content: right">${{product.price}}</mat-grid-tile-footer>
+      </mat-grid-tile>
+    </ng-container>
 
   </ng-container>
 </mat-grid-list>
