@@ -23,7 +23,6 @@ public static class ConfigurationHelpers
         defaultConnectionString += "uid=" + defaultConnectionConfig.GetValue<string>("Userid") + ";";
         defaultConnectionString += "pwd=" + defaultConnectionConfig.GetValue<string>("PasswordDB") + ";";
         defaultConnectionString += "database=" + defaultConnectionConfig.GetValue<string>("Database") + ";";
-        Console.WriteLine(defaultConnectionConfig);
         return defaultConnectionString;
     }
 }

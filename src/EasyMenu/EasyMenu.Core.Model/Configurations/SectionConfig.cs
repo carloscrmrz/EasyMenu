@@ -1,4 +1,5 @@
 using EasyMenu.Core.Model.Domains;
+using EasyMenu.Core.Model.Domains.Seeds;
 using EasyMenu.Core.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,8 +13,7 @@ public class SectionConfig : IEntityTypeConfiguration<Section>
         builder.Property(t => t.StatusId)
             .HasDefaultValue(Status.Active)
             .HasConversion<int>();
-
-        builder.HasMany(s => s.Products)
-            .WithMany(p => p.Sections);
+        
+        builder.SeedSections();
     }
 }
