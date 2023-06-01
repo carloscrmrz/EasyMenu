@@ -18,7 +18,6 @@ public static class ServiceCollectionExtensions
             {
                 var migrationContext = serviceScope.ServiceProvider.GetRequiredService<T>();
                 var applicationDb = migrationContext.Database;
-                // applicationDb.SetCommandTimeout(TimeSpan.FromMinutes(5));
                 applicationDb.Migrate();
             }
         }

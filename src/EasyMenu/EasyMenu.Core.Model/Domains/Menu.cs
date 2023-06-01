@@ -10,11 +10,8 @@ public class Menu : BaseEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int MenuId { get; set; }
     
-    [Required]
-    public string TenantId { get; set; }
-    
-    public Status StatusId { get; set; }
-    
-    public Tenant Tenant { get; set; }
+    public Status Status { get; set; }
+    public int TenantId { get; set; }
+    public virtual Tenant Tenant { get; set; }
     public virtual ICollection<Section> Sections { get; set; } = new HashSet<Section>();
 }

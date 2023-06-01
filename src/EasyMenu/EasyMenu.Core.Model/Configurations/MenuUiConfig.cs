@@ -10,10 +10,5 @@ public class MenuUiConfig : IEntityTypeConfiguration<MenuUi>
     {
         builder.Property(m => m.StatusId)
             .HasConversion<int>();
-
-        builder.HasOne(m => m.Tenant)
-            .WithMany(t => t.MenuUi)
-            .HasForeignKey(t => t.TenantId)
-            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

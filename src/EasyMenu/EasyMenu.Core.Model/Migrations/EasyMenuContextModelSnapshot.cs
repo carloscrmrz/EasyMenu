@@ -34,21 +34,35 @@ namespace EasyMenu.Core.Model.Migrations
                     b.Property<int>("EnteredByUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("TenantId1")
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("MenuId");
 
-                    b.HasIndex("TenantId1");
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Menus");
+
+                    b.HasData(
+                        new
+                        {
+                            MenuId = 1,
+                            DateOfInsert = new DateTime(2023, 5, 26, 4, 26, 52, 177, DateTimeKind.Local).AddTicks(3180),
+                            EnteredByUserId = 1,
+                            Status = 1,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            MenuId = 2,
+                            DateOfInsert = new DateTime(2023, 5, 26, 4, 26, 52, 178, DateTimeKind.Local).AddTicks(6577),
+                            EnteredByUserId = 1,
+                            Status = 2,
+                            TenantId = 1
+                        });
                 });
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.MenuUi", b =>
@@ -69,6 +83,8 @@ namespace EasyMenu.Core.Model.Migrations
 
                     b.HasKey("MenuUiId");
 
+                    b.HasIndex("TenantId");
+
                     b.ToTable("MenuUis");
                 });
 
@@ -82,7 +98,7 @@ namespace EasyMenu.Core.Model.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS");
 
-                    b.Property<int>("ParentProductId")
+                    b.Property<int?>("ParentProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Position")
@@ -127,6 +143,36 @@ namespace EasyMenu.Core.Model.Migrations
                     b.HasKey("SectionId");
 
                     b.ToTable("Sections");
+
+                    b.HasData(
+                        new
+                        {
+                            SectionId = 1,
+                            ImageUrl = "",
+                            SectionName = "Entradas",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            SectionId = 2,
+                            ImageUrl = "",
+                            SectionName = "Platos Fuertes",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            SectionId = 3,
+                            ImageUrl = "",
+                            SectionName = "Bebidas",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            SectionId = 4,
+                            ImageUrl = "",
+                            SectionName = "Postres",
+                            StatusId = 1
+                        });
                 });
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.Suscription", b =>
@@ -141,7 +187,7 @@ namespace EasyMenu.Core.Model.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("SuscriptionType")
@@ -150,6 +196,40 @@ namespace EasyMenu.Core.Model.Migrations
                     b.HasKey("SuscriptionId");
 
                     b.ToTable("Suscriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            SuscriptionId = 1,
+                            Discout = 0.0,
+                            Price = 0m,
+                            Status = 1,
+                            SuscriptionType = 0
+                        },
+                        new
+                        {
+                            SuscriptionId = 2,
+                            Discout = 0.0,
+                            Price = 10m,
+                            Status = 1,
+                            SuscriptionType = 1
+                        },
+                        new
+                        {
+                            SuscriptionId = 3,
+                            Discout = 0.0,
+                            Price = 100m,
+                            Status = 1,
+                            SuscriptionType = 2
+                        },
+                        new
+                        {
+                            SuscriptionId = 4,
+                            Discout = 0.0,
+                            Price = 1000m,
+                            Status = 1,
+                            SuscriptionType = 3
+                        });
                 });
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.Tenant", b =>
@@ -179,7 +259,7 @@ namespace EasyMenu.Core.Model.Migrations
                     b.Property<int>("EnteredByUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
@@ -206,12 +286,31 @@ namespace EasyMenu.Core.Model.Migrations
                     b.HasIndex("SuscriptionId");
 
                     b.ToTable("Tenants");
+
+                    b.HasData(
+                        new
+                        {
+                            TenantId = 1,
+                            ActiveSubscriptionId = 1,
+                            Address = "",
+                            CurrentMenuId = 1,
+                            DateOfInsert = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnteredByUserId = 0,
+                            Status = 1,
+                            SubPath = "easymenu",
+                            SuscriptionId = 1,
+                            Telephone = "123",
+                            TenantName = "EasyMenu"
+                        });
                 });
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfInsert")
@@ -227,6 +326,9 @@ namespace EasyMenu.Core.Model.Migrations
 
                     b.Property<int>("EnteredByUserId")
                         .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("ExpirationDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDisabledByInactivity")
                         .HasColumnType("tinyint(1)");
@@ -302,7 +404,8 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     b.HasOne("EasyMenu.Core.Model.Domains.Tenant", "Tenant")
                         .WithMany("Menus")
-                        .HasForeignKey("TenantId1")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tenant");
@@ -312,7 +415,8 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     b.HasOne("EasyMenu.Core.Model.Domains.Tenant", "Tenant")
                         .WithMany("MenuUi")
-                        .HasForeignKey("MenuUiId")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tenant");
@@ -322,9 +426,7 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     b.HasOne("EasyMenu.Core.Model.Domains.Product", "ParentProduct")
                         .WithMany("ChildProducts")
-                        .HasForeignKey("ParentProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentProductId");
 
                     b.Navigation("ParentProduct");
                 });
@@ -334,6 +436,7 @@ namespace EasyMenu.Core.Model.Migrations
                     b.HasOne("EasyMenu.Core.Model.Domains.Suscription", "Suscription")
                         .WithMany("Tenants")
                         .HasForeignKey("SuscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Suscription");
@@ -344,6 +447,7 @@ namespace EasyMenu.Core.Model.Migrations
                     b.HasOne("EasyMenu.Core.Model.Domains.Tenant", "Tenant")
                         .WithMany("Users")
                         .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tenant");

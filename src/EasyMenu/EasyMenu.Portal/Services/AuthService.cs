@@ -35,7 +35,7 @@ public class AuthService : IAuthService
             return LoginResult<User>.LockedOut(new User {Locked = user.Locked, AccessFailedCount = user.AccessFailedCount});
         }
 
-        if ( user.Tenant.StatusId != Status.Active)
+        if ( user.Tenant.Status != Status.Active)
         {
             await AddAttemptsFail(user.UserId, user.TenantId, user.AccessFailedCount);
             return LoginResult<User>.TenantDisabled();
@@ -70,15 +70,7 @@ public class AuthService : IAuthService
 
     private async Task AddAttemptsFail(int? userId, int? tenantId, int? accessFailedCount)
     {
-        // var attributeValueAttempts =
-        //     await _configService.GetAttributeByName(
-        //         AttributeConstants.LoginAttemptsFailCountBdName,
-        //         tenantId);
-        var maxAttempts =
-            // int.TryParse(attributeValueAttempts, out var attempts)
-            // ? attempts
-            // :
-            EasyMenuConstants.DefaultAttemptsLogin;
+        const int maxAttempts = EasyMenuConstants.DefaultAttemptsLogin;
         if (userId == null) return;
         {
             var user = new User {UserId = (int) userId};

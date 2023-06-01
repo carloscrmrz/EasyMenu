@@ -16,7 +16,7 @@ public class Suscription
     [Required]
     public decimal Price { get; set; }
     public double Discout { get; set; }
-    public Status StatusId { get; set; }
+    public Status Status { get; set; }
 
     public ICollection<Tenant> Tenants { get; set; } = new HashSet<Tenant>();
 }
