@@ -12,6 +12,9 @@ public static class ServicesBuilderExtensions
     {
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService>();
+        services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ISectionService>();
         
         return services;
     }

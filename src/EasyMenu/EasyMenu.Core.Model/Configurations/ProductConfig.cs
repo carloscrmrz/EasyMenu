@@ -10,12 +10,6 @@ public class ProductConfig : IEntityTypeConfiguration<Product>
     {
         builder.Property(p => p.StatusId)
             .HasConversion<int>();
-
-        builder.HasMany(p => p.Sections)
-            .WithMany(s => s.Products);
-
-        builder.HasMany(p => p.ChildProducts)
-            .WithOne(c => c.ParentProduct)
-            .HasForeignKey(p => p.ParentProductId);
+        
     }
 }

@@ -1,4 +1,5 @@
 using EasyMenu.Core.Model.Domains;
+using EasyMenu.Core.Model.Domains.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,12 +9,9 @@ public class SuscriptionConfig :IEntityTypeConfiguration<Suscription>
 {
     public void Configure(EntityTypeBuilder<Suscription> builder)
     {
-        builder.HasMany(sus => sus.Tenants)
-            .WithOne(t => t.Suscription)
-            .HasForeignKey(t => t.SuscriptionId)
-            .OnDelete(DeleteBehavior.ClientSetNull);
-
         builder.Property(sus => sus.SuscriptionType)
             .HasConversion<int>();
+
+        builder.SeedSuscriptions();
     }
 }

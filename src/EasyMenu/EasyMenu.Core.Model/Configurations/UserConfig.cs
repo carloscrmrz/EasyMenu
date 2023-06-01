@@ -23,9 +23,5 @@ public class UserConfig: IEntityTypeConfiguration<User>
             .HasDefaultValue(Status.Active)
             .HasConversion<int>();
 
-        builder.HasOne(u => u.Tenant)
-            .WithMany(t => t.Users)
-            .HasForeignKey(u => u.TenantId)
-            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

@@ -26,7 +26,7 @@ public class Tenant : BaseEntity
     
     public Suscriptions ActiveSubscriptionId { get; set; }
     public int CurrentMenuId { get; set; }
-    public Status StatusId { get; set; }
+    public Status Status{ get; set; }
     
     public int SuscriptionId { get; set; }
     public virtual Suscription Suscription { get; set; }

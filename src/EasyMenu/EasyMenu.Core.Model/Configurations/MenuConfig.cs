@@ -1,4 +1,5 @@
 using EasyMenu.Core.Model.Domains;
+using EasyMenu.Core.Model.Domains.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,14 +9,9 @@ public class MenuConfig : IEntityTypeConfiguration<Menu>
 {
     public void Configure(EntityTypeBuilder<Menu> builder)
     {
-        builder.Property(m => m.StatusId)
+        builder.Property(m => m.Status)
             .HasConversion<int>();
 
-        builder.HasOne(m => m.Tenant)
-            .WithMany(t => t.Menus)
-            .OnDelete(DeleteBehavior.ClientSetNull);
-
-        builder.HasMany(m => m.Sections)
-            .WithMany(s => s.Menus);
+        builder.SeedMenu();
     }
 }

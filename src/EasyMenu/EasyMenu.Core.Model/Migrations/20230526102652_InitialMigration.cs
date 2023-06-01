@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace EasyMenu.Core.Model.Migrations
 {
     /// <inheritdoc />
@@ -21,7 +23,7 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ParentProductId = table.Column<int>(type: "int", nullable: false),
+                    ParentProductId = table.Column<int>(type: "int", nullable: true),
                     ProductName = table.Column<string>(type: "VARCHAR(200)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "VARCHAR(200)", nullable: false)
@@ -37,8 +39,7 @@ namespace EasyMenu.Core.Model.Migrations
                         name: "FK_Products_Products_ParentProductId",
                         column: x => x.ParentProductId,
                         principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProductId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -69,7 +70,7 @@ namespace EasyMenu.Core.Model.Migrations
                     SuscriptionType = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     Discout = table.Column<double>(type: "double", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,7 +119,7 @@ namespace EasyMenu.Core.Model.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ActiveSubscriptionId = table.Column<int>(type: "int", nullable: false),
                     CurrentMenuId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     SuscriptionId = table.Column<int>(type: "int", nullable: false),
                     DateOfInsert = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "current_timestamp()"),
                     DateOfLastChange = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -131,7 +132,8 @@ namespace EasyMenu.Core.Model.Migrations
                         name: "FK_Tenants_Suscriptions_SuscriptionId",
                         column: x => x.SuscriptionId,
                         principalTable: "Suscriptions",
-                        principalColumn: "SuscriptionId");
+                        principalColumn: "SuscriptionId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -141,10 +143,8 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     MenuId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TenantId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    TenantId1 = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false),
                     DateOfInsert = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateOfLastChange = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     EnteredByUserId = table.Column<int>(type: "int", nullable: false)
@@ -153,10 +153,11 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     table.PrimaryKey("PK_Menus", x => x.MenuId);
                     table.ForeignKey(
-                        name: "FK_Menus_Tenants_TenantId1",
-                        column: x => x.TenantId1,
+                        name: "FK_Menus_Tenants_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Tenants",
-                        principalColumn: "TenantId");
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -164,7 +165,8 @@ namespace EasyMenu.Core.Model.Migrations
                 name: "MenuUis",
                 columns: table => new
                 {
-                    MenuUiId = table.Column<int>(type: "int", nullable: false),
+                    MenuUiId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TenantId = table.Column<int>(type: "int", nullable: false),
                     AssetPath = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -174,10 +176,11 @@ namespace EasyMenu.Core.Model.Migrations
                 {
                     table.PrimaryKey("PK_MenuUis", x => x.MenuUiId);
                     table.ForeignKey(
-                        name: "FK_MenuUis_Tenants_MenuUiId",
-                        column: x => x.MenuUiId,
+                        name: "FK_MenuUis_Tenants_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Tenants",
-                        principalColumn: "TenantId");
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -198,7 +201,9 @@ namespace EasyMenu.Core.Model.Migrations
                     IsDisabledByInactivity = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Locked = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
                     TemporaryLocked = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    ExpirationDate = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
                     DateOfInsert = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "current_timestamp()"),
                     DateOfLastChange = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     EnteredByUserId = table.Column<int>(type: "int", nullable: false)
@@ -210,7 +215,8 @@ namespace EasyMenu.Core.Model.Migrations
                         name: "FK_Users_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
-                        principalColumn: "TenantId");
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -239,15 +245,56 @@ namespace EasyMenu.Core.Model.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Menus_TenantId1",
+            migrationBuilder.InsertData(
+                table: "Sections",
+                columns: new[] { "SectionId", "ImageUrl", "SectionName", "StatusId" },
+                values: new object[,]
+                {
+                    { 1, "", "Entradas", 1 },
+                    { 2, "", "Platos Fuertes", 1 },
+                    { 3, "", "Bebidas", 1 },
+                    { 4, "", "Postres", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Suscriptions",
+                columns: new[] { "SuscriptionId", "Discout", "Price", "Status", "SuscriptionType" },
+                values: new object[,]
+                {
+                    { 1, 0.0, 0m, 1, 0 },
+                    { 2, 0.0, 10m, 1, 1 },
+                    { 3, 0.0, 100m, 1, 2 },
+                    { 4, 0.0, 1000m, 1, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tenants",
+                columns: new[] { "TenantId", "ActiveSubscriptionId", "Address", "CurrentMenuId", "DateOfLastChange", "EnteredByUserId", "Status", "SubPath", "SuscriptionId", "Telephone", "TenantName" },
+                values: new object[] { 1, 1, "", 1, null, 0, 1, "easymenu", 1, "123", "EasyMenu" });
+
+            migrationBuilder.InsertData(
                 table: "Menus",
-                column: "TenantId1");
+                columns: new[] { "MenuId", "DateOfInsert", "DateOfLastChange", "EnteredByUserId", "Status", "TenantId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 5, 26, 4, 26, 52, 177, DateTimeKind.Local).AddTicks(3180), null, 1, 1, 1 },
+                    { 2, new DateTime(2023, 5, 26, 4, 26, 52, 178, DateTimeKind.Local).AddTicks(6577), null, 1, 2, 1 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_TenantId",
+                table: "Menus",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuSection_SectionsSectionId",
                 table: "MenuSection",
                 column: "SectionsSectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuUis_TenantId",
+                table: "MenuUis",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ParentProductId",

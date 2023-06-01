@@ -27,12 +27,12 @@ public class EasyMenuContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new MenuConfig());
-        modelBuilder.ApplyConfiguration(new MenuUiConfig());
-        modelBuilder.ApplyConfiguration(new ProductConfig());
-        modelBuilder.ApplyConfiguration(new SectionConfig());
         modelBuilder.ApplyConfiguration(new SuscriptionConfig());
         modelBuilder.ApplyConfiguration(new TenantConfig());
+        modelBuilder.ApplyConfiguration(new MenuConfig());
+        modelBuilder.ApplyConfiguration(new SectionConfig());
+        modelBuilder.ApplyConfiguration(new ProductConfig());
+        modelBuilder.ApplyConfiguration(new MenuUiConfig());
         modelBuilder.ApplyConfiguration(new UserConfig());
 
     }

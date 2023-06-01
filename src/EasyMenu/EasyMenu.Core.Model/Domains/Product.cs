@@ -10,7 +10,7 @@ public class Product
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ProductId { get; set; }
     
-    public int ParentProductId { get; set; }
+    public int? ParentProductId { get; set; }
     
     [Required]
     [Column(TypeName = "VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS")]
