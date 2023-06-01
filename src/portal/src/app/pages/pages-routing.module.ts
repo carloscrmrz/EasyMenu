@@ -1,13 +1,24 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./home/home.component";
-import {MenuComponent} from "./menu/menu.component";
-import {ProductsComponent} from "./products/products.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
-  {path: 'menu', component: MenuComponent},
-  {path: 'product', component: ProductsComponent}
+  {
+    path: 'menu',
+    loadChildren: () =>
+      import('./menu/menu.module').then(m => m.MenuModule)
+  },
+  {
+    path: 'section',
+    loadChildren: () =>
+      import('./section/section.module').then(m => m.SectionModule)
+  },
+  {
+    path: 'product',
+    loadChildren: () =>
+      import('./product/product.module').then(m => m.ProductModule)
+  },
 ];
 
 @NgModule({

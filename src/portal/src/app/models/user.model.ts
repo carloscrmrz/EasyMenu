@@ -1,3 +1,5 @@
+import {Tenant} from "./tenant.model";
+
 export class User {
   userId: number;
   userLogin?: string;
