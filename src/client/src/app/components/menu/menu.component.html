@@ -6,7 +6,7 @@
 <mat-grid-list cols="2">
   <ng-container *ngIf="(menu$ | async) as menu">
     <ng-container *ngFor="let section of menu.sections">
-      <p>{{section.sectionName}}</p>
+<!--      <p>{{section.sectionName}}</p>-->
       <mat-grid-tile *ngFor="let product of section.products" class="mat-elevation-z2">
         <mat-grid-tile-header style="justify-content: center"><h3>{{product.productName}}</h3></mat-grid-tile-header>
 

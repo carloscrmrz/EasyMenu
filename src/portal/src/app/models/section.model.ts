@@ -9,7 +9,7 @@ export class Section {
   status: Status;
   constructor(section: any = {}) {
     Object.assign(this, section);
-    this.products = section.products.map(function (p) {
+    this.products = section.products.map((p: any) => {
       return new Product(p);
     });
   }

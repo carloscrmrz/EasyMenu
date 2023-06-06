@@ -1,0 +1,14 @@
+.right-align {
+  text-align: right;
+}
+
+mat-form-field {
+  height: calc(100% - 2%);
+  width: calc(100% - 2%);
+}
+
+.card-action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}

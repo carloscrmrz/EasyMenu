@@ -1,1 +1,26 @@
-<p>section-detail works!</p>
+<div class="example-container">
+  <h2 *ngIf="sections$ | async as section">{{section.sectionName}}</h2>
+
+  <div cdkDropList
+       class="list"
+       #sectionList="cdkDropList"
+       [cdkDropListData]="sections$"
+       [cdkDropListConnectedTo]="[productList]">
+  <!--       (cdkDropListDropped)="drop($event)"-->
+  <div class="example-box" [cdkDragData]="item.productId" *ngFor="let item of (sections$ | async)?.products"
+       cdkDrag>{{item.productName}}</div>
+</div>
+</div>
+
+<div class="example-container">
+  <h2>Productos</h2>
+
+  <div cdkDropList
+       class="list"
+       #productList="cdkDropList"
+       [cdkDropListData]="products$">
+  <!--       (cdkDropListDropped)="drop($event)"-->
+  <div class="example-box" [cdkDragData]="item.productId" *ngFor="let item of (products$ | async)"
+       cdkDrag>{{item.productName}}</div>
+</div>
+</div>

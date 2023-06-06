@@ -1,0 +1,32 @@
+<div class="main-container mat-app-background">
+  <mat-toolbar color="primary" class="topbar telative" style="overflow: hidden">
+    <button mat-icon-button (click)="inToolbarMenuToggle(); drawer.toggle()" value="sidebarclosed">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav #drawer
+                 [class.menu-open]="isMenuOpen"
+                 [class.menu-close]="!isMenuOpen"
+                 [opened]="isMenuOpen" mode="side"
+                 class="dark-sidebar">
+      <mat-nav-list class="mat-nav-list">
+        <mat-list-item [routerLink]="['menu']">
+          <a>Menus</a>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['product']">
+          <a>Products</a>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['section']">
+          <a>Sections</a>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="page-wrapper">
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

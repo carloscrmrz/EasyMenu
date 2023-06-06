@@ -1,1 +1,56 @@
-<p>product-detail works!</p>
+<div fxLayout="row">
+  <div fxFlex.gt-sm="100%">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title *ngIf="product$"> {{ product$.productName }}</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+        <div class="example-form" [formGroup]="productData">
+          <mat-grid-list class="filters" cols="3" rowHeight="70px" gutterSize="2px">
+            <mat-grid-tile [colspan]="2">
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Nombre del Producto</mat-label>
+                <input matInput autocomplete="off" formControlName="productName" required>
+                <mat-error *ngIf="productData.get('productName')?.invalid">
+                  El campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1">
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Precio del Producto</mat-label>
+                <input matInput autocomplete="off" formControlName="price" class="right-align">
+                <span matTextPrefix>$&nbsp;</span>
+                <span matTextSuffix>.00</span>
+                <mat-error *ngIf="productData.get('price')?.invalid">
+                  El campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Descripción del Producto</mat-label>
+                <textarea rows="5"
+                          matInput
+                          formControlName="description">
+            </textarea>
+                <mat-error *ngIf="productData.get('description')?.invalid">
+                  El campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <br>
+        </div>
+        <mat-card-actions class="card-action-buttons">
+          <button [routerLink]="['..']" color="primary" mat-raised-button>Atras</button>
+          <button mat-raised-button (click)="save()" [disabled]="invalid" color="accent"
+                  *ngIf="!isReadOnly">Guardar
+          </button>
+        </mat-card-actions>
+        <div style="clear: both;"></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

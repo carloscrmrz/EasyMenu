@@ -1,0 +1,17 @@
+.title-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+}
+
+.title-container .title-card-left {
+  flex-grow: 1;
+}
+
+.title-card-left {
+  align-self: center;
+}
+
+.title-card-right {
+  align-self: flex-end;
+}

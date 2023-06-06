@@ -4,6 +4,11 @@ import { CommonModule } from '@angular/common';
 import { MenuRoutingModule } from './menu-routing.module';
 import { MenuListComponent } from './menu-list/menu-list.component';
 import { MenuDetailComponent } from './menu-detail/menu-detail.component';
+import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTableModule} from "@angular/material/table";
+import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 
 
 @NgModule({
@@ -13,7 +18,13 @@ import { MenuDetailComponent } from './menu-detail/menu-detail.component';
   ],
   imports: [
     CommonModule,
-    MenuRoutingModule
+    MenuRoutingModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatTableModule,
+    CdkDrag,
+    CdkDropList
   ]
 })
 export class MenuModule { }

@@ -1,1 +1,97 @@
-<p>product-list works!</p>
+<mat-card>
+  <mat-card-content>
+    <div class="title-container">
+    <mat-card-title class="title-card-left"><span>Productos</span></mat-card-title>
+    <mat-card-title class="title-card-right">
+      <div>
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="add()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+    </div>
+    <mat-card-subtitle></mat-card-subtitle>
+
+    <!--    <mat-grid-list class="filters" cols="3" rowHeight="70px" [formGroup]="filters">-->
+    <!--      <mat-grid-tile>-->
+    <!--        <mat-form-field color="accent">-->
+    <!--          <mat-label>{{'persons.fullName' | translate}}</mat-label>-->
+    <!--          <input formControlName="fullName" matInput autocomplete="off">-->
+    <!--        </mat-form-field>-->
+    <!--      </mat-grid-tile>-->
+    <!--      <mat-grid-tile>-->
+    <!--        <mat-form-field color="accent">-->
+    <!--          <mat-label>{{'persons.institution' | translate}}</mat-label>-->
+    <!--          <mat-select formControlName="institutionRolexRefId">-->
+    <!--            <mat-option [value]="null"></mat-option>-->
+    <!--            <mat-option *ngFor="let institution of institutions$ | async" [value]="institution.id">-->
+    <!--              {{institution.value}}-->
+    <!--            </mat-option>-->
+    <!--          </mat-select>-->
+    <!--        </mat-form-field>-->
+    <!--      </mat-grid-tile>-->
+    <!--      <mat-grid-tile>-->
+    <!--        <mat-form-field color="accent">-->
+    <!--          <mat-label>{{'persons.identificationType' | translate}}</mat-label>-->
+    <!--          <mat-select formControlName="identificationTypeId">-->
+    <!--            <mat-option [value]="null"></mat-option>-->
+    <!--            <mat-option *ngFor="let identification of identifications$ | async" [value]="identification.id">-->
+    <!--              {{identification.value}}-->
+    <!--            </mat-option>-->
+    <!--          </mat-select>-->
+    <!--        </mat-form-field>-->
+    <!--      </mat-grid-tile>-->
+    <!--      <mat-grid-tile>-->
+    <!--        <mat-form-field color="accent">-->
+    <!--          <mat-label>{{'persons.identificationNumber' | translate}}</mat-label>-->
+    <!--          <input formControlName="identificationNumber" matInput autocomplete="off">-->
+    <!--        </mat-form-field>-->
+    <!--      </mat-grid-tile>-->
+    <!--      <mat-grid-tile>-->
+    <!--        <mat-form-field color="accent">-->
+    <!--          <mat-label>{{'persons.personRole' | translate}}</mat-label>-->
+    <!--          <mat-select formControlName="personRoleId">-->
+    <!--            <mat-option [value]="null"></mat-option>-->
+    <!--            <mat-option *ngFor="let role of roles$ | async" [value]="role.id">-->
+    <!--              {{role.value | translate}}-->
+    <!--            </mat-option>-->
+    <!--          </mat-select>-->
+    <!--        </mat-form-field>-->
+    <!--      </mat-grid-tile>-->
+    <!--    </mat-grid-list>-->
+    <div class="mat-elevation-z8">
+      <table mat-table class="mat-elevation-z8" [dataSource]="productList$">
+        <ng-container matColumnDef="productId">
+          <th mat-header-cell *matHeaderCellDef> Id</th>
+          <td mat-cell *matCellDef="let product"> {{product.productId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productName">
+          <th mat-header-cell *matHeaderCellDef> Nombre</th>
+          <td mat-cell *matCellDef="let product"> {{product.productName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones</th>
+          <td mat-cell *matCellDef="let product">
+            <button mat-icon-button color="accent" (click)="view(product.productId)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="edit(product.productId)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="delete(product.productId)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

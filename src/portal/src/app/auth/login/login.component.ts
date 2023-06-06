@@ -1,20 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpErrorResponse} from "@angular/common/http";
 import {UntypedFormBuilder, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
 import {CurrentUser} from "../../models/current-user.model";
-import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
+import {HttpErrorResponse} from "@angular/common/http";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   private HTTP_STATUS_AUTHENTICATION_TIME_OUT = 419;
 
-  HOME_URL = 'home';
+  HOME_URL = '';
   loginForm = this.fb.group({
     userLogin: ['', Validators.compose([Validators.required])],
     userPass: ['', Validators.compose([Validators.required])]
@@ -34,7 +33,6 @@ export class LoginComponent implements OnInit {
   }
 
   signIn() {
-    // this.loadingService.show('general.loading-data');
     this.authService.userLogin(this.loginForm.value)
       .subscribe({
         next: () => {
@@ -53,27 +51,13 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  // changePsw(changePswModel: UserChangePsw) {
-  //   changePswModel.userId = this.currentUser?.user?.userId;
-  //   this.authService.changePsw(changePswModel)
-  //     .pipe(
-  //       finalize(() => this.loadingService.hide()),
-  //     )
-  //     .subscribe(() => {
-  //       this.currentUser = null;
-  //       this.needChangePsw = false;
-  //       const message = this.translateService.instant('auth.pass-update-success');
-  //       this.messagesService.openSnackBar(message);
-  //     });
-  // }
-
   get loginFormInvalid() {
     return this.loginForm.invalid;
   }
 
   private setPasswordLengthValidator() {
     const control = this.loginForm.get('userPass');
-    control?.addValidators([Validators.minLength(6), Validators.maxLength(27)]);
+    control?.addValidators([Validators.minLength(4), Validators.maxLength(27)]);
     this.loginForm.updateValueAndValidity();
   }
 }
