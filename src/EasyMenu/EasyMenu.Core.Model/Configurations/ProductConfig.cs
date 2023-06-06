@@ -1,4 +1,5 @@
 using EasyMenu.Core.Model.Domains;
+using EasyMenu.Core.Model.Domains.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,8 +9,9 @@ public class ProductConfig : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.Property(p => p.StatusId)
+        builder.Property(p => p.Status)
             .HasConversion<int>();
         
+        builder.SeedProducts();
     }
 }

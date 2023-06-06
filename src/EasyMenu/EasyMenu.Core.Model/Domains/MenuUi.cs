@@ -12,7 +12,7 @@ public class MenuUi
     
     public int TenantId { get; set; }
     public string AssetPath { get; set; }
-    public Status StatusId { get; set; }
+    public Status Status { get; set; }
     
     public virtual Tenant Tenant { get; set; }
 }

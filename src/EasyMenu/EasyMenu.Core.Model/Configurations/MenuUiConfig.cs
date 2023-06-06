@@ -8,7 +8,7 @@ public class MenuUiConfig : IEntityTypeConfiguration<MenuUi>
 {
     public void Configure(EntityTypeBuilder<MenuUi> builder)
     {
-        builder.Property(m => m.StatusId)
+        builder.Property(m => m.Status)
             .HasConversion<int>();
     }
 }

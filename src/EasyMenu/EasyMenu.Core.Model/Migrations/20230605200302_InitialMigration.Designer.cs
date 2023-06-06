@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyMenu.Core.Model.Migrations
 {
     [DbContext(typeof(EasyMenuContext))]
-    [Migration("20230526102652_InitialMigration")]
+    [Migration("20230605200302_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace EasyMenu.Core.Model.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.Menu", b =>
@@ -53,7 +53,7 @@ namespace EasyMenu.Core.Model.Migrations
                         new
                         {
                             MenuId = 1,
-                            DateOfInsert = new DateTime(2023, 5, 26, 4, 26, 52, 177, DateTimeKind.Local).AddTicks(3180),
+                            DateOfInsert = new DateTime(2023, 6, 5, 14, 3, 2, 544, DateTimeKind.Local).AddTicks(2291),
                             EnteredByUserId = 1,
                             Status = 1,
                             TenantId = 1
@@ -61,7 +61,7 @@ namespace EasyMenu.Core.Model.Migrations
                         new
                         {
                             MenuId = 2,
-                            DateOfInsert = new DateTime(2023, 5, 26, 4, 26, 52, 178, DateTimeKind.Local).AddTicks(6577),
+                            DateOfInsert = new DateTime(2023, 6, 5, 14, 3, 2, 545, DateTimeKind.Local).AddTicks(3491),
                             EnteredByUserId = 1,
                             Status = 2,
                             TenantId = 1
@@ -78,7 +78,7 @@ namespace EasyMenu.Core.Model.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("TenantId")
@@ -114,14 +114,61 @@ namespace EasyMenu.Core.Model.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
 
                     b.HasIndex("ParentProductId");
 
+                    b.HasIndex("TenantId");
+
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            Description = "La buena",
+                            Position = 0,
+                            Price = 3m,
+                            ProductName = "Cerveza",
+                            Status = 1,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            Description = "Ta jugoso",
+                            Position = 0,
+                            Price = 29m,
+                            ProductName = "Tomahawk",
+                            Status = 1,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            Description = "Te despierta",
+                            Position = 0,
+                            Price = 1m,
+                            ProductName = "Cafe",
+                            Status = 1,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            Description = "Los que hacen glu glu",
+                            Position = 0,
+                            Price = 11m,
+                            ProductName = "Calamares",
+                            Status = 1,
+                            TenantId = 1
+                        });
                 });
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.Section", b =>
@@ -138,12 +185,17 @@ namespace EasyMenu.Core.Model.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("SectionId");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Sections");
 
@@ -153,28 +205,32 @@ namespace EasyMenu.Core.Model.Migrations
                             SectionId = 1,
                             ImageUrl = "",
                             SectionName = "Entradas",
-                            StatusId = 1
+                            Status = 1,
+                            TenantId = 1
                         },
                         new
                         {
                             SectionId = 2,
                             ImageUrl = "",
                             SectionName = "Platos Fuertes",
-                            StatusId = 1
+                            Status = 1,
+                            TenantId = 1
                         },
                         new
                         {
                             SectionId = 3,
                             ImageUrl = "",
                             SectionName = "Bebidas",
-                            StatusId = 1
+                            Status = 1,
+                            TenantId = 1
                         },
                         new
                         {
                             SectionId = 4,
                             ImageUrl = "",
                             SectionName = "Postres",
-                            StatusId = 1
+                            Status = 1,
+                            TenantId = 1
                         });
                 });
 
@@ -341,7 +397,7 @@ namespace EasyMenu.Core.Model.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
@@ -431,7 +487,26 @@ namespace EasyMenu.Core.Model.Migrations
                         .WithMany("ChildProducts")
                         .HasForeignKey("ParentProductId");
 
+                    b.HasOne("EasyMenu.Core.Model.Domains.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ParentProduct");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("EasyMenu.Core.Model.Domains.Section", b =>
+                {
+                    b.HasOne("EasyMenu.Core.Model.Domains.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("EasyMenu.Core.Model.Domains.Tenant", b =>

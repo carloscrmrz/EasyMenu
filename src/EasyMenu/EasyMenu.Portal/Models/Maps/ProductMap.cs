@@ -21,6 +21,7 @@ public static class ProductMap
         return new Product
         {
             ProductId = product.ProductId ?? 0,
+            TenantId = product.TenantId,
             ProductName = product.ProductName,
             Description = product.Description,
             Price = product.Price,

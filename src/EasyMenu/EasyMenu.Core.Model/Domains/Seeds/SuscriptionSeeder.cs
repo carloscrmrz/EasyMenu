@@ -1,4 +1,4 @@
-´╗┐using EasyMenu.Core.Model.Enums;
+using EasyMenu.Core.Model.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EasyMenu.Core.Model.Domains.Seeds;

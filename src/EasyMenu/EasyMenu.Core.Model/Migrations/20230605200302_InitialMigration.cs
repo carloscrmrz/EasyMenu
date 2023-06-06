@@ -18,50 +18,6 @@ namespace EasyMenu.Core.Model.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ParentProductId = table.Column<int>(type: "int", nullable: true),
-                    ProductName = table.Column<string>(type: "VARCHAR(200)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "VARCHAR(200)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Position = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
-                    table.ForeignKey(
-                        name: "FK_Products_Products_ParentProductId",
-                        column: x => x.ParentProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Sections",
-                columns: table => new
-                {
-                    SectionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SectionName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ImageUrl = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    StatusId = table.Column<int>(type: "int", nullable: false, defaultValue: 1)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sections", x => x.SectionId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Suscriptions",
                 columns: table => new
                 {
@@ -75,31 +31,6 @@ namespace EasyMenu.Core.Model.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Suscriptions", x => x.SuscriptionId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ProductSection",
-                columns: table => new
-                {
-                    ProductsProductId = table.Column<int>(type: "int", nullable: false),
-                    SectionsSectionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSection", x => new { x.ProductsProductId, x.SectionsSectionId });
-                    table.ForeignKey(
-                        name: "FK_ProductSection_Products_ProductsProductId",
-                        column: x => x.ProductsProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductSection_Sections_SectionsSectionId",
-                        column: x => x.SectionsSectionId,
-                        principalTable: "Sections",
-                        principalColumn: "SectionId",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -170,13 +101,71 @@ namespace EasyMenu.Core.Model.Migrations
                     TenantId = table.Column<int>(type: "int", nullable: false),
                     AssetPath = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    StatusId = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MenuUis", x => x.MenuUiId);
                     table.ForeignKey(
                         name: "FK_MenuUis_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TenantId = table.Column<int>(type: "int", nullable: false),
+                    ParentProductId = table.Column<int>(type: "int", nullable: true),
+                    ProductName = table.Column<string>(type: "VARCHAR(200)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "VARCHAR(200)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_Products_Products_ParentProductId",
+                        column: x => x.ParentProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId");
+                    table.ForeignKey(
+                        name: "FK_Products_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Sections",
+                columns: table => new
+                {
+                    SectionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TenantId = table.Column<int>(type: "int", nullable: false),
+                    SectionName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ImageUrl = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sections", x => x.SectionId);
+                    table.ForeignKey(
+                        name: "FK_Sections_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "TenantId",
@@ -202,7 +191,7 @@ namespace EasyMenu.Core.Model.Migrations
                     Locked = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
                     TemporaryLocked = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     ExpirationDate = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
                     DateOfInsert = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "current_timestamp()"),
                     DateOfLastChange = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -245,16 +234,30 @@ namespace EasyMenu.Core.Model.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.InsertData(
-                table: "Sections",
-                columns: new[] { "SectionId", "ImageUrl", "SectionName", "StatusId" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "ProductSection",
+                columns: table => new
                 {
-                    { 1, "", "Entradas", 1 },
-                    { 2, "", "Platos Fuertes", 1 },
-                    { 3, "", "Bebidas", 1 },
-                    { 4, "", "Postres", 1 }
-                });
+                    ProductsProductId = table.Column<int>(type: "int", nullable: false),
+                    SectionsSectionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSection", x => new { x.ProductsProductId, x.SectionsSectionId });
+                    table.ForeignKey(
+                        name: "FK_ProductSection_Products_ProductsProductId",
+                        column: x => x.ProductsProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductSection_Sections_SectionsSectionId",
+                        column: x => x.SectionsSectionId,
+                        principalTable: "Sections",
+                        principalColumn: "SectionId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
                 table: "Suscriptions",
@@ -277,8 +280,30 @@ namespace EasyMenu.Core.Model.Migrations
                 columns: new[] { "MenuId", "DateOfInsert", "DateOfLastChange", "EnteredByUserId", "Status", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 5, 26, 4, 26, 52, 177, DateTimeKind.Local).AddTicks(3180), null, 1, 1, 1 },
-                    { 2, new DateTime(2023, 5, 26, 4, 26, 52, 178, DateTimeKind.Local).AddTicks(6577), null, 1, 2, 1 }
+                    { 1, new DateTime(2023, 6, 5, 14, 3, 2, 544, DateTimeKind.Local).AddTicks(2291), null, 1, 1, 1 },
+                    { 2, new DateTime(2023, 6, 5, 14, 3, 2, 545, DateTimeKind.Local).AddTicks(3491), null, 1, 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "Description", "ParentProductId", "Position", "Price", "ProductName", "Status", "TenantId" },
+                values: new object[,]
+                {
+                    { 1, "La buena", null, 0, 3m, "Cerveza", 1, 1 },
+                    { 2, "Ta jugoso", null, 0, 29m, "Tomahawk", 1, 1 },
+                    { 3, "Te despierta", null, 0, 1m, "Cafe", 1, 1 },
+                    { 4, "Los que hacen glu glu", null, 0, 11m, "Calamares", 1, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Sections",
+                columns: new[] { "SectionId", "ImageUrl", "SectionName", "Status", "TenantId" },
+                values: new object[,]
+                {
+                    { 1, "", "Entradas", 1, 1 },
+                    { 2, "", "Platos Fuertes", 1, 1 },
+                    { 3, "", "Bebidas", 1, 1 },
+                    { 4, "", "Postres", 1, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -302,9 +327,19 @@ namespace EasyMenu.Core.Model.Migrations
                 column: "ParentProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_TenantId",
+                table: "Products",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductSection_SectionsSectionId",
                 table: "ProductSection",
                 column: "SectionsSectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sections_TenantId",
+                table: "Sections",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tenants_SuscriptionId",

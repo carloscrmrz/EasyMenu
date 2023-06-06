@@ -9,7 +9,7 @@ public class User : BaseEntity
 {
     public User()
     {
-        StatusId = Status.Active;
+        Status = Status.Active;
     }
 
     [Key]
@@ -35,7 +35,7 @@ public class User : BaseEntity
     public bool Locked { get; set; }
     public bool TemporaryLocked { get; set; }
     public int AccessFailedCount { get; set; }
-    public Status StatusId { get; set; }
+    public Status Status { get; set; }
     
     public DateTimeOffset? ExpirationDate { get; set; }
 

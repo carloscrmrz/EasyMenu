@@ -19,7 +19,7 @@ public class UserConfig: IEntityTypeConfiguration<User>
         builder.Property(u => u.TemporaryLocked)
             .HasDefaultValue(false);
         
-        builder.Property(u => u.StatusId)
+        builder.Property(u => u.Status)
             .HasDefaultValue(Status.Active)
             .HasConversion<int>();
 

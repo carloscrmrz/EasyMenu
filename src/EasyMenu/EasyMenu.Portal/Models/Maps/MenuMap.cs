@@ -11,7 +11,7 @@ public static class MenuMap
         return new MenuDto()
         {
             MenuId = menu.MenuId,
-            TenantId = menu.Tenant.TenantId,
+            TenantId = menu.TenantId,
             Sections = menu.Sections.Select(s => s.Map())
         };
     }

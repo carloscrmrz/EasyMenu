@@ -10,6 +10,10 @@ public class Product
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ProductId { get; set; }
     
+    public int TenantId { get; set; }
+    public virtual Tenant Tenant { get; set; }
+
+    
     public int? ParentProductId { get; set; }
     
     [Required]
@@ -21,7 +25,7 @@ public class Product
     
     public decimal Price { get; set; }
     public int Position { get; set; }
-    public Status StatusId { get; set; }
+    public Status Status { get; set; }
 
     public virtual ICollection<Product> ChildProducts { get; set; } = new HashSet<Product>();
     public virtual Product ParentProduct { get; set; }

@@ -10,7 +10,7 @@ public class SectionConfig : IEntityTypeConfiguration<Section>
 {
     public void Configure(EntityTypeBuilder<Section> builder)
     {
-        builder.Property(t => t.StatusId)
+        builder.Property(t => t.Status)
             .HasDefaultValue(Status.Active)
             .HasConversion<int>();
         

@@ -10,9 +10,12 @@ public class Section
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int SectionId { get; set; }
     
+    public int TenantId { get; set; }
+    public virtual Tenant Tenant { get; set; }
+    
     public string SectionName { get; set; }
     public string ImageUrl { get; set; }
-    public Status StatusId { get; set; }
+    public Status Status { get; set; }
 
     public virtual ICollection<Product> Products { get; set; } =
         new HashSet<Product>();
