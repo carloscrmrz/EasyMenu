@@ -6,15 +6,15 @@ builder.ConfigureServices();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 
+var origins = builder.Configuration.GetSection("Client").GetValue<string>("Path");
+app.UseCors(p => p
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+    .WithOrigins(origins));
 app.UseAuthorization();
 
 app.MapControllers();
