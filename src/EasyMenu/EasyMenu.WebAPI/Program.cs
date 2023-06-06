@@ -10,11 +10,6 @@ var app = builder.Build();
 var logger = LoggerFactory.Create(_ => { })
     .CreateLogger("App Startup");
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 

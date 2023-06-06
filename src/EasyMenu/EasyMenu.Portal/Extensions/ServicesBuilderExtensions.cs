@@ -11,10 +11,10 @@ public static class ServicesBuilderExtensions
     public static IServiceCollection RegisterServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IUserService>();
+        // services.AddScoped<IUserService>();
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<IProductService, ProductService>();
-        services.AddScoped<ISectionService>();
+        services.AddScoped<ISectionService, SectionService>();
         
         return services;
     }
