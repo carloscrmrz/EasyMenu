@@ -1,5 +1,4 @@
 using EasyMenu.Core.Model;
-using EasyMenu.Core.Model.Domains;
 using EasyMenu.Core.Model.Enums;
 using EasyMenu.Portal.Models;
 using EasyMenu.Portal.Models.Maps;
@@ -17,28 +16,42 @@ public class MenuService : IMenuService
         _context = context;
     }
 
-    public Task<MenuDto> CreateMenu(MenuDto menu)
+    public async Task<MenuDto> CreateMenu(MenuDto menu)
     {
-        // var saved = _context.Menus.AddAsync();
-        _context.SaveChangesAsync();
-        return Task.FromResult(menu);
+        var entity = menu.Map();
+        var entityEntry = _context.Menus.Add(entity);
+        await _context.SaveChangesAsync();
+
+        var menuDb = await _context.Menus.FindAsync(entityEntry.Entity.TenantId);
+        return menuDb?.Map() ?? menu;
     }
 
-    public async Task<MenuDto?> GetMenu(int tenantId)
+    public async Task<MenuDto?> GetMenu(int menuId)
     {
-        var menus = await _context.Menus
+        var menu = await _context.Menus
             .AsNoTracking()
+            .Where(m => m.MenuId == menuId)
             .Include(m => m.Sections)
-            .ThenInclude(s => s.Products)
-            .ToListAsync();
-
-        var menu = menus.Find(m => m.Tenant.TenantId == tenantId);
+            .FirstOrDefaultAsync();
+        
         return menu?.Map();
     }
 
-    public Task<MenuDto> UpdateMenu(MenuDto menu)
+    public async Task<IEnumerable<MenuDto>> GetAll(int tenantId)
     {
-        return Task.FromResult(menu);
+        var menus = await _context.Menus
+            .Include(m => m.Tenant)
+            .Include(m => m.Sections)
+            .Where(m => m.TenantId == tenantId)
+            .ToArrayAsync();
+
+        var menuDtos = menus.Select(m => m.Map());
+        return menuDtos;
+    }
+
+    Task<bool> IMenuService.UpdateMenu(MenuDto menu)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<bool> DeleteMenu(int menuId)
@@ -50,7 +63,6 @@ public class MenuService : IMenuService
 
         menu.Status = Status.Inactive;
         var saved = await _context.SaveChangesAsync();
-        return saved > 0;
-
+        return saved >= 1;
     }
 }

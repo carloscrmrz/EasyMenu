@@ -28,7 +28,7 @@ public class AuthService : IAuthService
         var user = await QueryableUser(predicate).FirstOrDefaultAsync();
             
         if (user == null) return LoginResult<User>.Failed;
-        if (user.StatusId == Status.Inactive) return LoginResult<User>.Disabled;
+        if (user.Status == Status.Inactive) return LoginResult<User>.Disabled;
 
         if (user.Locked)
         {

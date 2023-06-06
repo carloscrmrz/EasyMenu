@@ -14,10 +14,18 @@ public class MenuController: ControllerBase
         _menuService = menuService;
     }
 
-    [HttpGet("{tenantId:int}")]
-    public async Task<IActionResult> GetMenu(int tenantId)
+    [HttpGet]
+    public async Task<IActionResult> All(int tenantId)
     {
-        var menu = await _menuService.GetMenu(tenantId);
+        var menus = await _menuService.GetAll(1);
+        // var menus = await _menuService.GetAll(tenantId);
+        return Ok(menus); 
+    }
+    
+    [HttpGet("{menuId:int}")]
+    public async Task<IActionResult> GetMenu(int menuId)
+    {
+        var menu = await _menuService.GetMenu(menuId);
 
         if (menu is null)
             return NotFound();
