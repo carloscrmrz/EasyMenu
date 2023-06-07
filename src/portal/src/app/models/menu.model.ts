@@ -9,7 +9,8 @@ export class Menu {
 
   constructor(menu : any = {}) {
     Object.assign(this, menu);
-    this.sections = menu.sections.map((s: any) => {
+    this.status = menu.status;
+    this.sections = menu.sections?.map((s: any) => {
       return new Section(s);
     });
   }

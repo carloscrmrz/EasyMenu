@@ -12,6 +12,7 @@ public static class MenuMap
         {
             MenuId = menu.MenuId,
             TenantId = menu.TenantId,
+            Status = menu.Status,
             Sections = menu.Sections.Select(s => s.Map())
         };
     }

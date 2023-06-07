@@ -9,6 +9,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTableModule} from "@angular/material/table";
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
     MatIconModule,
     MatTableModule,
     CdkDrag,
-    CdkDropList
+    CdkDropList,
+    MatTooltipModule
   ]
 })
 export class MenuModule { }

@@ -33,7 +33,7 @@ public class MenuService : IMenuService
             .Where(m => m.MenuId == menuId)
             .Include(m => m.Sections)
             .FirstOrDefaultAsync();
-        
+
         return menu?.Map();
     }
 
@@ -49,9 +49,66 @@ public class MenuService : IMenuService
         return menuDtos;
     }
 
-    Task<bool> IMenuService.UpdateMenu(MenuDto menu)
+    public Task<bool> UpdateMenu(MenuDto menu)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> AddSectionToMenu(int menuId, int sectionId)
+    {
+        var menu = await _context.Menus
+            .Include(m => m.Sections)
+            .Where(m => m.MenuId == menuId)
+            .FirstOrDefaultAsync();
+        var section = await _context.Sections.FindAsync(sectionId);
+
+        if (menu is null)
+            return false;
+        if (section is null || menu.Sections.Contains(section))
+            return false;
+
+
+        menu.Sections.Add(section);
+        var result = await _context.SaveChangesAsync();
+
+        return result >= 1;
+    }
+
+    public async Task<bool> DeleteSectionFromMenu(int menuId, int sectionId)
+    {
+        var menu = await _context.Menus
+            .Include(m => m.Sections)
+            .Where(m => m.MenuId == menuId)
+            .FirstOrDefaultAsync();
+        var section = await _context.Sections.FindAsync(sectionId);
+
+        if (menu is null)
+            return false;
+        if (section is null || !menu.Sections.Contains(section))
+            return false;
+
+
+        menu.Sections.Remove(section);
+        var result = await _context.SaveChangesAsync();
+
+        return result >= 1;
+    }
+
+    public async Task<bool> MakeMenuPrincipal(int menuId, int tenantId)
+    {
+        var menus = await _context.Menus
+            .Where(m => m.TenantId == tenantId)
+            .ToListAsync();
+
+        foreach (var menu in menus)
+        {
+            menu.Status = menu.MenuId == menuId
+                ? Status.Active
+                : Status.Inactive;
+        }
+
+        var result = await _context.SaveChangesAsync();
+        return result >= 1;
     }
 
     public async Task<bool> DeleteMenu(int menuId)

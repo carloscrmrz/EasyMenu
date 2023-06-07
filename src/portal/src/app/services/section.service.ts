@@ -29,6 +29,14 @@ export class SectionService {
     return this.http.put<boolean>(`${this.apiUrl}`, section);
   }
 
+  addProductToSection(sectionId: number, productId: number): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/${sectionId}/product/${productId}`, { });
+  }
+
+  deleteProductFromSection(sectionId: number, productId: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this.apiUrl}/${sectionId}/product/${productId}`, { });
+  }
+
   delete(sectionId: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.apiUrl}/${sectionId}`);
   }

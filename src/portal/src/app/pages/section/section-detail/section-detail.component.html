@@ -1,26 +1,33 @@
 <div class="example-container">
-  <h2 *ngIf="sections$ | async as section">{{section.sectionName}}</h2>
-
+  <h2 *ngIf="section">{{section.sectionName}}</h2>
   <div cdkDropList
        class="list"
        #sectionList="cdkDropList"
-       [cdkDropListData]="sections$"
-       [cdkDropListConnectedTo]="[productList]">
-  <!--       (cdkDropListDropped)="drop($event)"-->
-  <div class="example-box" [cdkDragData]="item.productId" *ngFor="let item of (sections$ | async)?.products"
-       cdkDrag>{{item.productName}}</div>
-</div>
+       [cdkDropListDisabled]="isReadOnly"
+       [cdkDropListData]="section.products"
+       [cdkDropListConnectedTo]="[sectionList]"
+       (cdkDropListDropped)="drop($event, section)">
+    <div *ngFor="let product of section.products">
+      <div class="example-box" cdkDrag [cdkDragData]="product.productId">
+        <span>{{product.productName}}</span>
+        <span (click)="exit(product)"><mat-icon>close</mat-icon></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="example-container">
   <h2>Productos</h2>
-
   <div cdkDropList
        class="list"
-       #productList="cdkDropList"
-       [cdkDropListData]="products$">
-  <!--       (cdkDropListDropped)="drop($event)"-->
-  <div class="example-box" [cdkDragData]="item.productId" *ngFor="let item of (products$ | async)"
-       cdkDrag>{{item.productName}}</div>
+       [cdkDropListDisabled]="isReadOnly"
+       [cdkDropListData]="products"
+       [cdkDropListConnectedTo]="[sectionList]">
+    <div *ngFor="let product of products">
+      <div class="example-box" cdkDrag [cdkDragData]="product">
+        {{product.productName}}
+      </div>
+    </div>
+  </div>
 </div>
-</div>
+

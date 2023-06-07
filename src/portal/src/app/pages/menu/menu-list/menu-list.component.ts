@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {MenuService} from "../../../services/menu.service";
+import {Observable} from "rxjs";
+import {Menu} from "../../../models/menu.model";
 
 @Component({
   selector: 'app-menu-list',
@@ -8,8 +10,14 @@ import {MenuService} from "../../../services/menu.service";
   styleUrls: ['./menu-list.component.scss']
 })
 export class MenuListComponent {
-  displayedColumns = ['menuId', 'actions'];
-  menuList = this.menuService.all();
+  displayedColumns = ['menuId', 'menuStatus', 'actions'];
+  menuList$: Observable<Menu[]> = this.menuService.all();
+  statusMap: Readonly<any> = Object.freeze(
+    {
+      1: 'Activo',
+      2: 'Desactivado'
+    });
+
 
   constructor(protected router: Router,
               private menuService: MenuService) {
@@ -29,9 +37,17 @@ export class MenuListComponent {
 
   delete(id: number) {
     this.menuService.delete(id).subscribe({
-      next: (result) => {
-        this.menuList = this.menuService.all();
+      next: () => {
+        this.menuList$ = this.menuService.all();
       }
     });
+  }
+
+  activate(id: number) {
+    this.menuService.makeMenuPrincipal(id).subscribe({
+      next: () => {
+        this.menuList$ = this.menuService.all();
+      }
+    })
   }
 }

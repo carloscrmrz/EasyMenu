@@ -52,4 +52,25 @@ public class MenuController: ControllerBase
         var successfulDelete = await _menuService.DeleteMenu(menuId);
         return successfulDelete ? Ok() : StatusCode(500);
     }
+
+    [HttpPost("{menuId:int}/section/{sectionId:int}")]
+    public async Task<IActionResult> AddSectionToMenu(int menuId, int sectionId)
+    {
+        var result = await _menuService.AddSectionToMenu(menuId, sectionId);
+        return result ? Ok() : StatusCode(500);
+    }
+    
+    [HttpPut("{menuId:int}/section/{sectionId:int}")]
+    public async Task<IActionResult> DeleteSectionFromMenu(int menuId, int sectionId)
+    {
+        var result = await _menuService.DeleteSectionFromMenu(menuId, sectionId);
+        return result ? Ok() : StatusCode(500);
+    }
+
+    [HttpPut("principal/{menuId:int}")]
+    public async Task<IActionResult> MakeMenuPrincipal([FromQuery] int tenantId, int menuId)
+    {
+        var result = await _menuService.MakeMenuPrincipal(menuId, tenantId);
+        return result ? Ok() : StatusCode(500);
+    }
 }

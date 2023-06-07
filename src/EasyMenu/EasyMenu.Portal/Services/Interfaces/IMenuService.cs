@@ -10,5 +10,8 @@ public interface IMenuService
     public Task<MenuDto?> GetMenu(int menuId);
     public Task<IEnumerable<MenuDto>> GetAll(int tenantId);
     public Task<bool> UpdateMenu(MenuDto menu);
+    public Task<bool> AddSectionToMenu(int menuId, int sectionId);
+    public Task<bool> DeleteSectionFromMenu(int menuId, int sectionId);
+    public Task<bool> MakeMenuPrincipal(int menuId, int tenantId);
     public Task<bool> DeleteMenu(int menuId);
 }

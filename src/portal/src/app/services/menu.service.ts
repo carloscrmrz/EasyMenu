@@ -25,11 +25,23 @@ export class MenuService {
     return this.http.post<Menu>(`${this.apiUrl}`, menu);
   }
 
+  addSectionToMenu(menuId: number, sectionId: number): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/${menuId}/section/${sectionId}`, { });
+  }
+
+  deleteSectionFromMenu(menuId: number, sectionId: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this.apiUrl}/${menuId}/section/${sectionId}`, { });
+  }
+
   update(menu: Menu): Observable<boolean> {
     return this.http.put<boolean>(`${this.apiUrl}`, menu);
   }
 
   delete(menuId: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.apiUrl}/${menuId}`);
+  }
+
+  makeMenuPrincipal(menuId: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this.apiUrl}/principal/${menuId}?tenantId=1`, {})
   }
 }

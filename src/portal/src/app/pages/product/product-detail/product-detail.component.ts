@@ -37,8 +37,6 @@ export class ProductDetailComponent implements OnInit {
     this.isAdd =
       this.activatedRoute.snapshot.url[0].path === 'add';
 
-    console.log(this.activatedRoute.snapshot.url[0].path);
-
     if (this.isAdd) {
       const newProduct = new Product();
       this.setFormData(newProduct);

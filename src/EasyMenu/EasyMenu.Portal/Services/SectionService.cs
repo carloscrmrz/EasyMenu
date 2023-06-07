@@ -43,6 +43,44 @@ public class SectionService : ISectionService
         return sectionDto;
     }
 
+    public async Task<bool> AddSectionToMenu(int productId, int sectionId)
+    {
+        var section = await _context.Sections
+            .Include(s => s.Products)
+            .Where(s => s.SectionId == sectionId)
+            .FirstOrDefaultAsync();
+        var product = await _context.Products.FindAsync(productId);
+
+        if (section is null)
+            return false;
+        if (product is null || section.Products.Contains(product))
+            return false;
+        
+        section.Products.Add(product);
+        var result = await _context.SaveChangesAsync();
+
+        return result >= 1;
+    }
+
+    public async Task<bool> DeleteSectionFromMenu(int productId, int sectionId)
+    {
+        var section = await _context.Sections
+            .Include(s => s.Products)
+            .Where(s => s.SectionId == sectionId)
+            .FirstOrDefaultAsync();
+        var product = await _context.Products.FindAsync(productId);
+
+        if (section is null)
+            return false;
+        if (product is null || !section.Products.Contains(product))
+            return false;
+        
+        section.Products.Remove(product);
+        var result = await _context.SaveChangesAsync();
+
+        return result >= 1;
+    }
+
     public async Task<IEnumerable<SectionDto>> GetAll(int tenantId)
     {
         var sections = await _context.Sections

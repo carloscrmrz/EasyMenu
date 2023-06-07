@@ -49,4 +49,18 @@ public class SectionController : ControllerBase
         var result = await _sectionService.DeleteSection(sectionId);
         return result ? Ok() : BadRequest();
     }
+    
+    [HttpPost("{sectionId:int}/product/{productId:int}")]
+    public async Task<IActionResult> AddSectionToMenu(int productId, int sectionId)
+    {
+        var result = await _sectionService.AddSectionToMenu(productId, sectionId);
+        return result ? Ok() : StatusCode(500);
+    }
+    
+    [HttpPut("{sectionId:int}/product/{productId:int}")]
+    public async Task<IActionResult> DeleteSectionFromMenu(int productId, int sectionId)
+    {
+        var result = await _sectionService.DeleteSectionFromMenu(productId, sectionId);
+        return result ? Ok() : StatusCode(500);
+    }
 }
