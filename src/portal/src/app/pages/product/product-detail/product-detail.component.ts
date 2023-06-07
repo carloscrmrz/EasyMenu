@@ -4,7 +4,8 @@ import {Product} from "../../../models/product.model";
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {finalize, Observable} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
+import {LoadingService} from "../../../services/loading.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-product-detail',
@@ -29,6 +30,8 @@ export class ProductDetailComponent implements OnInit {
   constructor(private productService: ProductService,
               private fb: UntypedFormBuilder,
               private activatedRoute: ActivatedRoute,
+              private loadingService: LoadingService,
+              private snackBar: MatSnackBar,
               private router: Router) {}
 
   ngOnInit(): void {
@@ -65,7 +68,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   save() {
-    // this.loadingService.show('general.loading-data');
+    this.loadingService.show();
 
     const rawProduct = this.productData.getRawValue();
     this.setFormData(rawProduct);
@@ -75,24 +78,19 @@ export class ProductDetailComponent implements OnInit {
       : this.productService.update(this.product$);
 
     productObservable.pipe(
-      // finalize(() => this.loadingService.hide())
+      finalize(() => this.loadingService.hide())
     ).subscribe(
       {
-        next: (next : any) => {
-          const savedKey = 'general.saved-correctly';
-          // this.translateService.get([savedKey, this.acceptKey]).subscribe(data => {
-          //   this.snackBar.open(data[savedKey], data[this.acceptKey], {
-          //     duration: 2000,
-          //   });
-          // });
+        next: () => {
+          this.snackBar.open('Guardado exitosamente', 'aceptar', {
+            duration: 2000,
+          });
           this.router.navigate(['products']);
         },
-        error: ({error}: HttpErrorResponse) => {
-          // this.translateService.get(this.acceptKey).subscribe(acceptKey => {
-          //   this.snackBar.open(`${error}`, acceptKey, {
-          //     duration: 2000,
-          //   });
-          // });
+        error: () => {
+          this.snackBar.open('Ocurrió un error', 'aceptar', {
+            duration: 2000,
+          });
         }
       });
   }

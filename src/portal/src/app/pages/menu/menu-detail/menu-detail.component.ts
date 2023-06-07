@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Section} from "../../../models/section.model";
 import {SectionService} from "../../../services/section.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from "@angular/cdk/drag-drop";
 import {MenuService} from "../../../services/menu.service";
 import {Menu} from "../../../models/menu.model";
