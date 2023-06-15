@@ -1,9 +1,15 @@
 <div class="main-container mat-app-background">
   <mat-toolbar color="primary" class="topbar telative" style="overflow: hidden">
+    <div [routerLink]="['menu']" style="cursor: pointer">HOME</div>
     <button mat-icon-button (click)="inToolbarMenuToggle(); drawer.toggle()" value="sidebarclosed">
       <mat-icon>menu</mat-icon>
     </button>
+    <span style="flex: 1 1 auto"></span>
+    <button mat-icon-button [routerLink]="['login']">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
   </mat-toolbar>
+
   <mat-sidenav-container class="example-sidenav-container">
     <mat-sidenav #drawer
                  [class.menu-open]="isMenuOpen"

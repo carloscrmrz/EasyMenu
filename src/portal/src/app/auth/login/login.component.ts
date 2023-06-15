@@ -13,7 +13,7 @@ import {AuthService} from "../auth.service";
 export class LoginComponent implements OnInit {
   private HTTP_STATUS_AUTHENTICATION_TIME_OUT = 419;
 
-  HOME_URL = '';
+  HOME_URL = 'menu';
   loginForm = this.fb.group({
     userLogin: ['', Validators.compose([Validators.required])],
     userPass: ['', Validators.compose([Validators.required])]

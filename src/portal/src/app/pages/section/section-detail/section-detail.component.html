@@ -1,33 +1,78 @@
-<div class="example-container">
-  <h2 *ngIf="section">{{section.sectionName}}</h2>
-  <div cdkDropList
-       class="list"
-       #sectionList="cdkDropList"
-       [cdkDropListDisabled]="isReadOnly"
-       [cdkDropListData]="section.products"
-       [cdkDropListConnectedTo]="[sectionList]"
-       (cdkDropListDropped)="drop($event, section)">
-    <div *ngFor="let product of section.products">
-      <div class="example-box" cdkDrag [cdkDragData]="product.productId">
-        <span>{{product.productName}}</span>
-        <span (click)="exit(product)"><mat-icon>close</mat-icon></span>
-      </div>
-    </div>
-  </div>
-</div>
+<mat-card style="padding-top: 2rem">
+  <mat-card-content *ngIf="completeCatalogs">
+    <div [formGroup]="sectionData">
+      <mat-grid-list cols="3" rowHeight="70px" gutterSize="2px">
+        <mat-grid-tile>
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Nombre de la Sección</mat-label>
+            <input matInput autocomplete="off" formControlName="sectionName" required>
+            <mat-error *ngIf="sectionData.get('sectionName')?.invalid">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
 
-<div class="example-container">
-  <h2>Productos</h2>
-  <div cdkDropList
-       class="list"
-       [cdkDropListDisabled]="isReadOnly"
-       [cdkDropListData]="products"
-       [cdkDropListConnectedTo]="[sectionList]">
-    <div *ngFor="let product of products">
-      <div class="example-box" cdkDrag [cdkDragData]="product">
-        {{product.productName}}
+        <mat-grid-tile *ngIf="isAdd">
+          <div style="padding-right: 10px; justify-content: right">
+            <button mat-raised-button class="send-button m-r-20" (click)="back()"
+                    color="accent">Atras
+            </button>
+          </div>
+          <div style="padding-right: 10px">
+            <button mat-raised-button class="send-button" [disabled]="invalid" (click)="save()"
+                    *ngIf="!isReadOnly" color="primary">Guardar
+            </button>
+          </div>
+        </mat-grid-tile>
+        <!--          <mat-grid-tile [colspan]="1">-->
+        <!--            <mat-form-field appearance="fill" color="primary">-->
+        <!--              <mat-label>Imagen de la Sección</mat-label>-->
+        <!--              <input matInput autocomplete="off" formControlName="imageUrl">-->
+        <!--            </mat-form-field>-->
+        <!--          </mat-grid-tile>-->
+
+        <!--          <mat-form-field>-->
+        <!--            <mat-slide-toggle class="m-l-10" formControlName="status" [checked]="true">-->
+        <!--              Sección activa?-->
+        <!--            </mat-slide-toggle>-->
+        <!--          </mat-form-field>-->
+      </mat-grid-list>
+    </div>
+    <div class="example-container">
+      <h2 *ngIf="section">{{section.sectionName ?? 'Sección'}}</h2>
+      <div cdkDropList
+           class="list"
+           #sectionList="cdkDropList"
+           [cdkDropListDisabled]="isReadOnly"
+           [cdkDropListData]="section.products"
+           [cdkDropListConnectedTo]="[sectionList]"
+           (cdkDropListDropped)="drop($event, section)">
+        <div *ngFor="let product of section.products">
+          <div class="example-box" cdkDrag [cdkDragData]="product.productId">
+            <span>{{product.productName}}</span>
+            <span (click)="exit(product)" style="cursor: pointer"><mat-icon>close</mat-icon></span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div class="example-container">
+      <h2>Productos</h2>
+      <div cdkDropList
+           class="list"
+           [cdkDropListDisabled]="isReadOnly"
+           [cdkDropListData]="products"
+           [cdkDropListConnectedTo]="[sectionList]">
+        <div *ngFor="let product of products">
+          <div class="example-box" cdkDrag [cdkDragData]="product">
+            {{product.productName}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </mat-card-content>
+</mat-card>
+
 

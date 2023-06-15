@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Section} from "../../../models/section.model";
 import {SectionService} from "../../../services/section.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from "@angular/cdk/drag-drop";
 import {MenuService} from "../../../services/menu.service";
 import {Menu} from "../../../models/menu.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {finalize, forkJoin, Observable} from "rxjs";
+import {LoadingService} from "../../../services/loading.service";
 
 @Component({
   selector: 'app-menu-detail',
@@ -18,17 +21,31 @@ export class MenuDetailComponent implements OnInit {
   menuId: number;
   isReadOnly: boolean = false;
   isAdd: boolean = false;
+  addSections: Section[] = [];
+
+  menuData: UntypedFormGroup = this.fb.group({
+    menuId: [0],
+    tenantId: [1],
+    status: [0, Validators.required]
+  });
 
   constructor(private sectionService: SectionService,
-              private menuService: MenuService,
               private activatedRoute: ActivatedRoute,
-              private snackBar: MatSnackBar) {}
+              private loadingService: LoadingService,
+              private menuService: MenuService,
+              private fb: UntypedFormBuilder,
+              private snackBar: MatSnackBar,
+              private router: Router) {}
 
   ngOnInit(): void {
     this.isReadOnly =
       this.activatedRoute.snapshot.url[0].path === 'view';
     this.isAdd =
       this.activatedRoute.snapshot.url[0].path === 'add';
+
+    if (this.isReadOnly) {
+      this.menuData.disable()
+    }
 
     this.menuId = this.activatedRoute.snapshot.params['id'];
 
@@ -38,7 +55,7 @@ export class MenuDetailComponent implements OnInit {
     });
 
     this.menuService.get(this.menuId).subscribe({
-      next: (menu: Menu) => this.menu = menu,
+      next: (menu: Menu) => this.setFormData(menu),
       error: () => this.menu = new Menu(),
     })
   }
@@ -84,4 +101,61 @@ export class MenuDetailComponent implements OnInit {
       },
     })
   }
+
+  setFormData(menu: Menu) {
+    if (menu) {
+      this.menu = new Menu(menu);
+      this.menuData.patchValue(menu);
+    }
+    this.menuData.updateValueAndValidity();
+  }
+
+  save() {
+    this.loadingService.show();
+
+    const rawMenu = this.menuData.getRawValue();
+    this.setFormData(rawMenu);
+
+    const menuObservable: Observable<any> = this.isAdd
+      ? this.menuService.create(this.menu)
+      : this.menuService.update(this.menu);
+
+    menuObservable.pipe(
+      finalize(() => this.loadingService.hide())
+    ).subscribe(
+      {
+        next: (menu: Menu) => {
+          this.snackBar.open('Guardado exitosamente', 'aceptar', {
+            duration: 2000,
+          });
+          this.menuId = menu.menuId!;
+
+          const sectionSubscription$: Observable<boolean>[] = [];
+          if (this.addSections.length > 0) {
+            this.addSections.forEach(s => {
+              sectionSubscription$.push(
+                this.menuService.addSectionToMenu(this.menuId, s.sectionId!)
+              )
+            });
+          }
+
+          forkJoin({...sectionSubscription$})
+            .subscribe({
+              next: () => this.router.navigate(['section'])
+            });
+        },
+        error: () => {
+          this.snackBar.open('Ocurrió un error', 'aceptar', {
+            duration: 2000,
+          });
+        }
+      });
+
+
+  }
+
+  back() {
+    this.router.navigate(['menu']);
+  }
+
 }

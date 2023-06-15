@@ -20,6 +20,7 @@ public static class SectionMap
         return new Section
         {
             SectionId = section.SectionId ?? 0,
+            TenantId = section.TenantId,
             SectionName = section.SectionName,
             ImageUrl = section.ImageUrl,
             Products = section.Products.Select(p => p.Map()).ToHashSet()

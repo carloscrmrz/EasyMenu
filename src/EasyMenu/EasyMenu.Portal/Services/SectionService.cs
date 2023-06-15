@@ -1,4 +1,5 @@
 using EasyMenu.Core.Model;
+using EasyMenu.Core.Model.Domains;
 using EasyMenu.Core.Model.Enums;
 using EasyMenu.Portal.Models;
 using EasyMenu.Portal.Models.Maps;

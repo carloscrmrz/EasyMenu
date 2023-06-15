@@ -9,6 +9,11 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTableModule} from "@angular/material/table";
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatInputModule} from "@angular/material/input";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 
 @NgModule({
@@ -24,7 +29,12 @@ import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
     MatIconModule,
     MatTableModule,
     CdkDropList,
-    CdkDrag
+    CdkDrag,
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatInputModule,
+    MatSlideToggleModule,
+    MatButtonToggleModule
   ]
 })
 export class SectionModule { }

@@ -9,9 +9,9 @@ export class Section {
   status: Status;
   constructor(section: any = {}) {
     Object.assign(this, section);
-    this.products = section.products.map((p: any) => {
+    this.products = section.products?.map((p: any) => {
       return new Product(p);
-    });
+    }) ?? [];
   }
 
 

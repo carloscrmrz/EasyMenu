@@ -1,23 +1,25 @@
 <div class="limiter">
   <div class="container-login100">
-    <div class="wrap-login100">
       <div class="login100-form">
         <mat-card class="login-container">
           <mat-card-content class="login-content">
             <form [formGroup]="loginForm" (ngSubmit)="signIn(); $event.preventDefault(); $event.stopPropagation();">
-              <mat-form-field appearance="outline" floatLabel="always" color="accent">
-                <mat-icon matPrefix>person_pin</mat-icon>
-                <input type="text" matInput placeholder="Usuario" formControlName="userLogin" required>
-                <mat-error>
-                  El nombre de usuario es requerido
-                </mat-error>
-
-                <mat-icon matPrefix>lock</mat-icon>
-                <input type="password" matInput placeholder="Contraseña" formControlName="userPass">
-                <mat-error>
-                  La contraseña es requerida
-                </mat-error>
-              </mat-form-field>
+              <div class="help">
+                <mat-form-field floatLabel="always" color="accent">
+                  <mat-icon matPrefix>person_pin</mat-icon>
+                  <input type="text" matInput placeholder="Usuario" autocomplete="no" formControlName="userLogin" required>
+                  <mat-error>
+                    El nombre de usuario es requerido
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-icon matPrefix>lock</mat-icon>
+                  <input type="password" matInput placeholder="Contraseña" formControlName="userPass">
+                  <mat-error>
+                    La contraseña es requerida
+                  </mat-error>
+                </mat-form-field>
+              </div>
               <button class="mt-15" mat-raised-button color="accent" type="submit"
                       [disabled]="loginFormInvalid">
                 INGRESAR
@@ -28,4 +30,3 @@
       </div>
     </div>
   </div>
-</div>
